@@ -113,13 +113,22 @@ class SugarBug
 	end
 			
 	def initialize h
-		@subj = h[:item].find{|e| e[:name] == "name"}[:value]
-		@bug_number = h[:item].find{|e| e[:name] == "bug_number"}[:value]
-		@created_by = h[:item].find{|e| e[:name] == "created_by"}[:value]
-		@date_entered = h[:item].find{|e| e[:name] == "date_entered"}[:value]
-		@description = h[:item].find{|e| e[:name] == "description"}[:value]
-		@resolution = h[:item].find{|e| e[:name] == "resolution"}[:value]
-		@worklog = h[:item].find{|e| e[:name] == "work_log"}[:value]		
+		@subj = parse_values h[:item].find{|e| e[:name] == "name"}[:value].to_s
+		@bug_number = parse_values h[:item].find{|e| e[:name] == "bug_number"}[:value]
+		@created_by = parse_values h[:item].find{|e| e[:name] == "created_by"}[:value]
+		@date_entered = parse_values h[:item].find{|e| e[:name] == "date_entered"}[:value]
+		@description = parse_values h[:item].find{|e| e[:name] == "description"}[:value]
+		@resolution = parse_values h[:item].find{|e| e[:name] == "resolution"}[:value]
+		@worklog = parse_values h[:item].find{|e| e[:name] == "work_log"}[:value]		
+	end
+
+	private
+	
+	def parse_values v
+		# if the field is empty the hash is returned, but not the empty string
+		# i.e. {:"@xsi:type"=>"xsd:string"} instead of ""
+		
+		v.instance_of?(Hash) ? "" : v
 	end
 	
 end
